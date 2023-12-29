@@ -2,15 +2,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+//Creating Router ..........
+import userRouter from './routes/user.route.js';
+import authRouter from './routes/auth.route.js';
+
 dotenv.config();
 
-//Database Connection ............
+//Database Connection Check............
 mongoose.connect(process.env.URI)
 .then(() => {
     console.log('Connected to the Mongo DB');
 })
 .catch((err) => {
-    console.log("Mongo Err", err);
+    console.log("Error Found", err);
 });
 
 // Creating Server ............
@@ -22,7 +26,5 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}!`);
 });
 
-app.get('/test', (req, res) => {
-    res.send('Server is runnig perfectly fine.');
-    console.log('All set');
-});
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
